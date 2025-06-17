@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DU30's ICC Arrest: A sentiment Analysis on FB Comments Using Machine Learning</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="icon" type="image/png" href="assets/icon.png">
+</head>
+<body>
+    <div class="content">
+        <h1>DU30's ICC Arrest: A Sentiment Analysis on FB Comments Using Machine Learning</h1>
+        <p>
+            On March 11, 2025, former Philippine President Rodrigo 'Digong' Roa Duterte was arrested in Manila
+            by the Philippine National Police (PNP) and Interpol with a warrant from the International Criminal Court (ICC) 
+            charging him with crimes against humanity. He was initially held at the Villamor Air Base and then flown to the 
+            Netherlands to face trial in The Hague. His arrest was in relation to the extrajudicial killings during his time 
+            as mayor in Davao and his bloody war on drugs during his presidency. 
+        </p>
+        <p>
+            This news garnered a lot of attention from supporters and critics and soon enough, social media platforms such as 
+            Facebook were flooded with comments ranging from condemnation and support of the arrest.
+        </p>
+        <p>
+            Analyzing these comments manually would be difficult. However, machine learning can make the process faster, 
+            more efficient, and cheaper. Sentiment analysis, in particular, is the process of extracting subjective information 
+            from texts, like whether a comment is positive or negative.
+        </p>
+        <p>
+            This leads us to an important question:<b> Do more people react positively to the former president's arrest? </b>
+        </p>
+        <h2>Dataset Collection</h2>
+        <p>
+            To train the machine learning model, 500 comments were scraped on Facebook using Apify, a cloud platform for 
+            web scraping and browser automation. Two AI agents—systems that use large language models (LLMs) to do certain 
+            tasks—were utilized, specifically the Facebook Scraper Pro by alien_force and Facebook Post Comments Scraper 
+            by easyapi. 
+        </p>
+        <p>
+            These AI agents scraped comments only from following Facebook posts of major news sites in the Philippines:
+        </p>
+        <div class="card-container">
+            <a href="https://www.facebook.com/gmanews/posts/pfbid05Ud46Yogr4C4EkWyKcejUJkVZboanAt28m4o7majC6sTaCdvxZ2TdNbqgMvcr7tBl" target="_blank" rel="noopener noreferrer">
+                <div class="news-card gma">
+                    <img src="assets/gma.jpg" alt="GMA">
+                    <div class="source">GMA News</div>
+                </div>
+            </a>
+            <a href="https://www.facebook.com/abscbnNEWS/posts/pfbid02qaKduooHqB7Wmc2puNCkVaW3BzBv2YsKNyhevnbEKbP1WHNDExt6fV9MNotPy4L3l" target="_blank" rel="noopener noreferrer">
+                <div class="news-card abs">
+                    <img src="assets/abs-cbn.jpg" alt="ABS-CBN">
+                    <div class="source">ABS-CBN</div>
+                </div>
+            </a>
+            <a href="https://www.facebook.com/rapplerdotcom/posts/pfbid0kVtkmsaADU8XFx9yo4bHobQGqwSC6oH5mXv4X5stM6rHrR8KakkpQZ26zwzMjisyl" target="_blank" rel="noopener noreferrer">
+                <div class="news-card rappler">
+                    <img src="assets/rappler.jpg" alt="Rappler">
+                    <div class="source">Rappler</div>
+                </div>
+            </a>
+            <a href="https://www.facebook.com/PTVph/videos/621604210837838" target="_blank" rel="noopener noreferrer">
+                <div class="news-card ptv">
+                    <img src="assets/ptv.png" alt="PTV">
+                    <div class="source">PTV News</div>
+                </div>
+            </a>
+        </div>
+
+        <h2>Dataset Preprocessing</h2>
+        <p>
+            After collection, the dataset underwent preprocessing. All scraped comments were combined into a single dataset, 
+            and using a python script, each comment was translated to English using the Deep Translator library and 
+            Google Translate . Since the translation process is not perfect, the dataset was manually inspected, and all the 
+            translation errors were corrected. Finally, all comments were labeled 1 (positive) or 2 (negative).
+        </p>
+        
+        <div class="tool-card-container">
+            <div class="tool-card merge">
+                <img src="assets/merge.svg" alt="Merge" />
+            </div>
+            <div class="tool-card translate">
+                <img src="assets/translate.svg" alt="Translate" />
+            </div>
+            <div class="tool-card label">
+                <img src="assets/label.svg" alt="Label" />
+            </div>
+        </div>
+
+        <h2>Model Training</h2>
+        <p>
+            The dataset was split into 70% training and 30% testing ratio. When training the machine learning model, 
+            the Pipeline class by scikit-learn was utilized, as it streamlines data preprocessing and model training into a 
+            single process. The pipeline contains Count Vectorizer, Term-Frequency Times Inverse Document-Frequency (TF-IDF) 
+            Transformer, and, lastly, Support Vector Classifier.
+        </p>
+
+        <div class="tool-card-container">
+            <div class="tool-card vectorizer">
+                <img src="assets/vectorizer.svg" alt="Count Vectorizer" />
+            </div>
+            <div class="tool-card tfidf">
+                <img src="assets/tfidf.svg" alt="TF-IDF Transformer" />
+            </div>
+            <div class="tool-card svc">
+                <img src="assets/svc.svg" alt="Support Vector Classifier" />
+            </div>
+        </div>
+
+        <p>
+            Count Vectorizer converts a collection of text documents to a matrix of token counts, while TF-IDF Transformer 
+            transforms a count of matrix to a normalized TF or TF-IDF representation. Count Vectorizer uses a custom tokenizer 
+            that performs lemmatization, a process of reducing words to their base form.
+        </p>
+        <p>
+            To streamline the model optimization, a parameter grid search was used. GridSearchCV from scikit-learn performs 
+            an exhaustive search over specified parameter values for an estimator—in this case, the pipeline.
+        </p>
+        <p>
+            Running the grid search resulted to the following parameters:
+        </p>
+        <table class="parameters">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>CountVectorizer's ngram_range</td>
+                    <td>(1,3)</td>
+                </tr>
+                <tr>
+                    <td>TF-IDF's sublinear_tf</td>
+                    <td>False</td>
+                </tr>
+                <tr>
+                    <td>SVC's C</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>SVC's gamma</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>SVC's kernel</td>
+                    <td>rbf</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>Model Evaluation</h2>
+        <p>
+            After training the model using the best parameters produced in the grid search, 
+            the model was then used to evaluate the test dataset. The model achieved the following results:
+        </p>
+        <table class="confusion">
+            <thead>
+                <tr>
+                    <th> </th>
+                    <th>Predicted Negative</th>
+                    <th>Predicted Positive</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Actual Negative</td>
+                    <td>68</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>Actual Positive</td>
+                    <td>13</td>
+                    <td>69</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="classification">
+            <thead>
+                <tr>
+                    <th>Label</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F-1 Score</th>
+                    <th>Support</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Positive</td>
+                    <td>0.84</td>
+                    <td>0.87</td>
+                    <td>0.86</td>
+                    <td>78</td>
+                </tr>
+                <tr>
+                    <td>Negative</td>
+                    <td>0.87</td>
+                    <td>0.84</td>
+                    <td>0.86</td>
+                    <td>82</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="accuracy">
+            <thead>
+                <tr>
+                    <th>Accuracy</th>
+                    <th>0.86</th>
+                </tr>
+            </thead>
+        </table>
+        <p>
+            Given these metrics, accuracy is the best fit for evaluating the model, as the dataset is generally balanced. 
+            The model is able to identify whether a comment is positive or negative with 86% accuracy. 
+            Notably, the baseline for sentiment evaluation is 80-85% (humans tend to agree within this range), 
+            and industry standards fall between 70% and 90%. With an accuracy of 86%, 
+            the model is already considered a good one.
+        </p>
+        <h2>Sentiment Analysis</h2>
+        <p>
+            Since the goal is to analyze Facebook comments about the former President's arrest, another 500 
+            comments were scraped (unseen by the model). All comments also underwent preprocessing, from 
+            cleaning to translation. The model was then used to predict the sentiment of the translated comments. 
+            It predicted that 269 comments were negative, while 231 were positive.
+        </p>
+        <div class="graph">
+            <iframe src="assets/categoryFig.html"></iframe>                   
+        </div>
+        <p>
+            The following graph shows the breakdown of sentiments by gender. Among the negative comments, 
+            138 were from females and 131 from males. Conversely, 118 positive comments were from females, 
+            while 113 were from males.
+        </p>
+        <div class="graph">
+            <iframe src="assets/categoryGenderFig.html"></iframe>                   
+        </div>
+        <p>
+            Analyzing the length of comments—based on the number of characters, 
+            including spaces and special characters—negative comments average 133 characters, 
+            with a maximum of nearly 5,000 characters. Positive comments average 147 characters, 
+            slightly higher than negative comments, with a maximum of 1,000 characters.
+        </p>
+        <div class="graph">
+            <iframe src="assets/commentLength.html"></iframe>                   
+        </div>
+        <p>
+            For further analysis, topic modeling was conducted on the translated comments. 
+            Topic modeling is a technique in natural language processing (NLP) that extracts 
+            themes or topics from a collection of documents—in this case, Facebook comments.
+        </p>
+        <p>
+            Several unsupervised learning techniques are used for topic modeling, such as Latent Dirichlet Allocation (LDA) 
+            and Non-Negative Matrix Factorization (NMF). LDA is a probabilistic form of topic modeling that assumes 
+            documents are mixtures of topics, while NMF decomposes a document-term matrix into topic and term weight matrices.
+        </p>
+        <p>
+            Using these two techniques, the top ten words for the ten topics were extracted.
+        </p>
+        <p>
+            <b>LDA</b>
+        </p>
+        <table class="lda">
+            <thead>
+                <tr>
+                    <th>Topic Number</th>
+                    <th>Top 10 Words</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>haist, paid, post, oh, fprrd, stand, late, bias, gma, media</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>icc, accountable, held, roa, rodrigo, duterte, day, far, remember, bbm</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>detained, high, president, right, lords, philippines, drugs,      report, lady, drug</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>just, ejk, served, law, country, duterte, philippines, victims, icc, justice</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>update, report, lady, arrested, people, liza, duterte, marcos, gma, news</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>paolo, hear, wanna, thing, karma, story, news, death, report, just</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>won, love, best, arrest, like, time, god, tatay, digong, president</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>torre, hiding, away, custodial, arrest, brought, state, warrant, court, icc</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>resigned, high, police, leadership, disagree, forgiveness, ask, don, wish, arrest</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>reporting, support, duterte, ug, ng, na, nga, mga, ang, sa</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            <b>NMF</b>
+        </p>
+        <table class="nmf">
+            <thead>
+                <tr>
+                    <th>Topic Number</th>
+                    <th>Top 10 Words</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>job, man, let, needs, great, ecstatic, long, yes, justice, served</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>media, shut, reporting, tired, haha, marcos, liza, update, gma, news</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>arrested, pnp, arrest, interpol, member, court, time, duterte, philippines, icc</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>grateful, drug, thousands, praying, innocent, families, finally, justice, ejk, victims</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>paolo, condition, detained, tantoco, fyang, stopped, america, la, lady, report</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>prove, court, extent, prosecute, opportunity, harsh, innocent, let, rule, law</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>deserved, thank, country, good, best, pray, forever, love, president, god</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>warrant, thing, know, knows, happen, going, don, wait, right, just</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>love, innocent, proven, cases, turned, protect, allah, ready, digong, tatay</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>human, long, god, innocent, time, finally, truth, let, justice, prevail</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>Hypothesis Testing</h2>
+        <p>
+            Circling back to the question, <b>"Do more people react positively to the former President's arrest?"</b>, 
+            a null and an alternative hypothesis were proposed.
+        </p>
+            <ul>
+                <li><b>Null Hypothesis: </b> There is no significant difference between positive and negative comments. </li>
+                <li><b>Alternative Hypothesis: </b> There is a significant difference between positive and negative comments. </li>
+            </ul>
+        <p>
+            To test these hypotheses, a chi-square test was performed using SciPy's statistics module.
+            <br>
+            The calculated chi-square statistic is <b>2.89</b>, the P-value is <b>0.9</b>, and the critical value is <b>3.8</b>. 
+            Since the P-value is greater than the alpha level of <b>0.05</b>, and the chi-square statistic is 
+            less than the critical value, <b>we must accept the null hypothesis.</b>
+        </p>
+        <h2>Results</h2>
+        <ul>
+            <li>The model achieved <b>86% accuracy</b></li>
+            <li><b>269</b> of the comments are <b>negative</b> while <b>231</b> comments are <b>positive.</b> </li>
+            <li><b>Negative comments</b> are from <b>138 females</b> and <b>131 males.</b></li>
+            <li><b>Positive comments</b> are from <b>118 females</b> and <b>113 males.</b></li>
+            <li><b>Positive comments</b> on average, are <b>longer by 14 characters</b> than negative comments</li>
+            <li>The top words mainly revolve around <b>justice, politics, law enforcement, and media coverage</b>. 
+                There's a strong focus on <b>arrests, courts, accountability,</b> and leaders like 
+                <b>Duterte</b> and <b>Marcos.</b> Some words show <b>support</b> or <b>disagreement</b> with events, 
+                while others express <b>hope, love,</b> or <b>faith.</b></li>
+            <li>There is <b>no significant difference</b> between positive and negative comments.</li>
+        </ul>
+        <div class="about">
+            <h2>About</h2>
+            <div class="about-content">
+                <div class="pic">
+                <!-- Replace this with an <img src="..."> if needed -->
+                <img src="assets/ivan.jpg" alt="Ivan" />
+            </div>
+            <div class="text">
+            <p>
+                Hi, I'm Ivan, an aspiring data scientist with a background in electronics engineering. 
+                I like to do cool stuff. Check out my work below!
+                <br><br>
+                <b><a href="https://linkedin.com/in/jov-ivan-padilla" target="_blank" rel="noopener noreferrer">LinkedIn</a></b> &nbsp; | &nbsp;
+                <b><a href="https://github.com/ivan-padilla" target="_blank" rel="noopener noreferrer">GitHub</a></b>
+            </p>
+            </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
