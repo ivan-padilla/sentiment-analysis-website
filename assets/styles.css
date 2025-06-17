@@ -1,0 +1,429 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono&family=Roboto+Mono&display=swap");
+
+body {
+    display: flex;
+    justify-content: center;
+    background-color: #ffffe4;
+}
+
+.content {
+    width: 60%;
+    max-width: 50%px;
+    min-width: 30%px;
+    padding: 1%;
+}
+
+
+h1 {
+    font-family: 'Space Mono', monospace;
+    font-size: 4rem;
+    font-weight: bold;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    font-family: 'Space Mono', monospace;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+p {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+br {
+    display: block;
+    margin-bottom: 1.5rem;
+}
+
+ul {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    list-style-type: square;
+}
+
+/* News Cards */
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 100%;
+}
+
+/* Card styles */
+
+.news-card {
+    position: relative;
+    display: flex;
+    width: 100%;
+    aspect-ratio: 2.87 / 1;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.news-card:hover {
+    transform: translateY(-4px);
+}
+
+.news-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+}
+
+.source {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #ffffff;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.news-card:hover .source {
+    opacity: 1;
+}
+
+
+@media (max-width: 700px) {
+    .card-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Dataset Preprocessing and Model Training*/
+
+.tool-card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
+  gap: 20px;
+  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.tool-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  aspect-ratio: 2.87 / 1;
+
+  
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.tool-card.merge {
+    background-color: rgba(16, 157, 88, 1);
+}
+
+.tool-card.translate {
+    background-color: rgba(66, 134, 245, 1);
+}
+
+.tool-card.label {
+    background-color: rgba(225, 24, 58, 1);
+}
+
+.tool-card.vectorizer {
+    background-color: rgba(66, 134, 245, 1);
+}
+
+.tool-card.tfidf {
+    background-color: rgba(16, 157, 88, 1);
+}
+
+.tool-card.svc {
+    background-color: rgba(245, 180, 0, 1);
+}
+
+.tool-card:hover {
+  transform: translateY(-4px);
+}
+
+.tool-card img {
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+}
+
+/* Graphs */
+
+.graph {
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  height: 600px;
+}
+
+.graph iframe {
+  border: none;
+  border-radius: 16px;
+  width: 100%;
+  height: 100%;
+}
+
+
+/* Table for Parameters */
+
+.parameters {
+    width: 100%;
+    border-collapse: separate;
+    margin: 2rem 0;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.125rem;
+    text-align: left;
+}
+
+.parameters th, .parameter td {
+    padding: 0.25rem;
+}
+
+.parameters thead {
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+    font-size: 1.25rem;
+}
+
+.parameters tbody tr {
+    background-color: #ffffff;
+}
+
+.parameters tbody tr:hover {
+    background-color: #ddd;
+}
+
+/* Table for Confusion Matrix */
+
+.confusion {
+    width: 100%;
+    border-collapse: separate;
+    margin: 2rem 0;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.125rem;
+    text-align: left;
+}
+
+.confusion th, .parameter td {
+    padding: 0.25rem;
+}
+
+.confusion thead {
+    background-color: #000000;
+    color: white;
+    font-size: 1.25rem;
+}
+
+.confusion tbody tr {
+    background-color: #ffffff;
+}
+
+.confusion tbody tr:hover {
+    background-color: #ddd;
+}
+
+/* Table for Classification Metrics */
+
+.classification {
+    width: 100%;
+    border-collapse: separate;
+    margin: 2rem 0;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.125rem;
+    text-align: left;
+}
+
+.classification th, .parameter td {
+    padding: 0.25rem;
+}
+
+.classification thead {
+    background-color: #000000;
+    color: white;
+    font-size: 1.25rem;
+}
+
+.classification tbody tr {
+    background-color: #ffffff;
+}
+
+.classification tbody tr:hover {
+    background-color: #ddd;
+}
+
+/* Table for Accuracy */
+
+.accuracy {
+    width: 100%;
+    border-collapse: separate;
+    margin: 2rem 0;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.125rem;
+    text-align: left;
+}
+
+.accuracy th, .parameter td {
+    padding: 0.25rem;
+}
+
+.accuracy thead {
+    background-color: #000000;
+    color: white;
+    font-size: 1.25rem;
+}
+
+.accuracy thead tr:hover {
+    background-color: #383838;
+}
+
+/* Table for LDA */
+
+.lda {
+    width: 100%;
+    border-collapse: separate;
+    margin: 2rem 0;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.125rem;
+    text-align: left;
+}
+
+.lda th, .parameter td {
+    padding: 0.25rem;
+}
+
+.lda thead {
+    background-color: #000000;
+    color: white;
+    font-size: 1.25rem;
+}
+
+.lda tbody tr {
+    background-color: #ffffff;
+}
+
+.lda tbody tr:hover {
+    background-color: #ddd;
+}
+
+/* Table for NMF */
+
+.nmf {
+    width: 100%;
+    border-collapse: separate;
+    margin: 2rem 0;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.125rem;
+    text-align: left;
+}
+
+.nmf th, .parameter td {
+    padding: 0.25rem;
+}
+
+.nmf thead {
+    background-color: #000000;
+    color: white;
+    font-size: 1.25rem;
+}
+
+.nmf tbody tr {
+    background-color: #ffffff;
+}
+
+.nmf tbody tr:hover {
+    background-color: #ddd;
+}
+
+/* About Section */
+.about {
+  background-color: #000;
+  color: #fff;
+}
+
+.about h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  padding-top: 5%;
+}
+
+.about-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  padding: 5%;
+}
+
+.about .pic img {
+  width: 200px;
+  height: auto;
+  border-radius: 200px;
+  object-fit: cover;
+}
+
+.about .text {
+  max-width: 600px;
+  font-size: 1.5rem;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+
+/* Optional: improve readability and stacking on small screens */
+@media (max-width: 768px) {
+  .about-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .about .text {
+    max-width: 100%;
+  }
+
+  .about .pic img {
+    width: 60%;
+    max-width: 300px;
+  }
+}
